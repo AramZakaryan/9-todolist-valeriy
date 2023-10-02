@@ -25,7 +25,7 @@ export type TaskType = {
 }
 
 type PropsType = {
-    id: string
+    todolistId: string
     title: string
     tasks: Array<TaskType>
     removeTask: (taskId: string, todolistId: string) => void
@@ -54,22 +54,22 @@ export function Todolist(props: PropsType) {
     //     }
     // }
 
-    const removeTodolist = () => props.removeTodolist(props.id)
+    const removeTodolist = () => props.removeTodolist(props.todolistId)
 
-    const onAllClickHandler = () => props.changeFilter("all", props.id);
-    const onActiveClickHandler = () => props.changeFilter("active", props.id);
-    const onCompletedClickHandler = () => props.changeFilter("completed", props.id);
+    const onAllClickHandler = () => props.changeFilter("all", props.todolistId);
+    const onActiveClickHandler = () => props.changeFilter("active", props.todolistId);
+    const onCompletedClickHandler = () => props.changeFilter("completed", props.todolistId);
 
     const addTask = (title: string) => {
-        props.addTask(title, props.id)
+        props.addTask(title, props.todolistId)
     }
 
     const todolistTitleChangeHandler = (newTitle: string) => {
-        props.changeTodolistTitle(props.id, newTitle)
+        props.changeTodolistTitle(props.todolistId, newTitle)
     }
 
     const taskTitleChangeHandler = (taskId: string, newTitle: string) => {
-        props.changeTaskTitle(taskId, newTitle, props.id)
+        props.changeTaskTitle(taskId, newTitle, props.todolistId)
 
     }
 
@@ -96,10 +96,10 @@ export function Todolist(props: PropsType) {
         <List>
             {
                 props.tasks.map(t => {
-                    const onClickHandler = () => props.removeTask(t.id, props.id)
+                    const onClickHandler = () => props.removeTask(t.id, props.todolistId)
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         let newIsDoneValue = e.currentTarget.checked;
-                        props.changeTaskStatus(t.id, newIsDoneValue, props.id);
+                        props.changeTaskStatus(t.id, newIsDoneValue, props.todolistId);
                     }
 
                     // const taskTitleChangeHandler = (newTitle: string) => {

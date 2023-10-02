@@ -8,17 +8,17 @@ test('correct todolist should be removed', () => {
     let todolistId2 = v1()
 
     const startState: Array<TodolistType> = [
-        {id: todolistId1, title: 'What to learn', filter: 'all'},
-        {id: todolistId2, title: 'What to buy', filter: 'all'}
+        {todolistId: todolistId1, title: 'What to learn', filter: 'all'},
+        {todolistId: todolistId2, title: 'What to buy', filter: 'all'}
     ]
 
     const endState = todolistsReducer(
         startState,
-        {type: 'REMOVE-TODOLIST', payload: {id: todolistId1}}
+        {type: 'REMOVE-TODOLIST', payload: {todolistId: todolistId1}}
     )
 
     expect(endState.length).toBe(1)
-    expect(endState[0].id).toBe(todolistId2)
+    expect(endState[0].todolistId).toBe(todolistId2)
 })
 
 test('correct todolist should be added', () => {
@@ -26,19 +26,21 @@ test('correct todolist should be added', () => {
     let todolistId2 = v1()
 
     let newTodolistTitle = 'New Todolist'
+    let newTodolistId = v1()
 
     const startState: Array<TodolistType> = [
-        {id: todolistId1, title: 'What to learn', filter: 'all'},
-        {id: todolistId2, title: 'What to buy', filter: 'all'}
+        {todolistId: todolistId1, title: 'What to learn', filter: 'all'},
+        {todolistId: todolistId2, title: 'What to buy', filter: 'all'}
     ]
 
     const endState = todolistsReducer(
         startState,
-        {type: 'ADD-TODOLIST', payload: {title: newTodolistTitle}}
+        {type: 'ADD-TODOLIST', payload: {title: newTodolistTitle, todolistId: newTodolistId }}
     )
 
     expect(endState.length).toBe(3)
-    expect(endState[2].title).toBe(newTodolistTitle)
+    expect(endState[0].title).toBe(newTodolistTitle)
+    expect(endState[0].todolistId).toBe(newTodolistId)
 })
 
 test('correct todolist should change its name', () => {
@@ -48,13 +50,13 @@ test('correct todolist should change its name', () => {
     let newTodolistTitle = 'New Todolist'
 
     const startState: Array<TodolistType> = [
-        {id: todolistId1, title: 'What to learn', filter: 'all'},
-        {id: todolistId2, title: 'What to buy', filter: 'all'}
+        {todolistId: todolistId1, title: 'What to learn', filter: 'all'},
+        {todolistId: todolistId2, title: 'What to buy', filter: 'all'}
     ]
 
     const action = {
         type: 'CHANGE-TODOLIST-TITLE',
-        payload: {id: todolistId2, title: newTodolistTitle}
+        payload: {todolistId: todolistId2, title: newTodolistTitle}
     } as const
 
 
@@ -71,13 +73,13 @@ test('correct filter of todolist should be changed', () => {
     let newFilter: FilterValuesType = 'completed'
 
     const startState: Array<TodolistType> = [
-        {id: todolistId1, title: 'What to learn', filter: 'all'},
-        {id: todolistId2, title: 'What to buy', filter: 'all'}
+        {todolistId: todolistId1, title: 'What to learn', filter: 'all'},
+        {todolistId: todolistId2, title: 'What to buy', filter: 'all'}
     ]
 
     const action = {
         type: 'CHANGE-TODOLIST-FILTER',
-        payload: {id: todolistId2, filter: newFilter}
+        payload: {todolistId: todolistId2, filter: newFilter}
     } as const
 
     const endState = todolistsReducer(startState, action)

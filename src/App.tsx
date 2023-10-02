@@ -20,12 +20,12 @@ import {Menu} from "@mui/icons-material";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
-    id: string
+    todolistId: string
     title: string
     filter: FilterValuesType
 }
 
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
@@ -35,8 +35,8 @@ function App() {
     const todolistId2 = v1();
 
     const [todolists, setTodolists] = useState<Array<TodolistType>>([
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
+        {todolistId: todolistId1, title: "What to learn", filter: "all"},
+        {todolistId: todolistId2, title: "What to buy", filter: "all"}
     ])
     const [tasks, setTasks] = useState<TasksStateType>({
         [todolistId1]: [
@@ -98,7 +98,7 @@ function App() {
     }
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        let todolist = todolists.find(tl => tl.id === todolistId);
+        let todolist = todolists.find(tl => tl.todolistId === todolistId);
         if (todolist) {
             todolist.filter = value;
             setTodolists([...todolists])
@@ -107,7 +107,7 @@ function App() {
 
     function removeTodolist(id: string) {
         // засунем в стейт список тудулистов, id которых не равны тому, который нужно выкинуть
-        setTodolists(todolists.filter(tl => tl.id != id));
+        setTodolists(todolists.filter(tl => tl.todolistId != id));
         // удалим таски для этого тудулиста из второго стейта, где мы храним отдельно таски
         delete tasks[id]; // удаляем св-во из объекта... значением которого являлся массив тасок
         // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
@@ -116,7 +116,7 @@ function App() {
 
     const addTodolist = (title: string) => {
         let newTodolistId: string = v1()
-        let newTodolist: TodolistType = {id: newTodolistId, title: title, filter: "all"}
+        let newTodolist: TodolistType = {todolistId: newTodolistId, title: title, filter: "all"}
         setTodolists([...todolists, newTodolist])
         setTasks({...tasks, [newTodolistId]: []})
     }
@@ -127,7 +127,7 @@ function App() {
         //      todolistToBeChanged.title=title
         //      setTodolists([...todolists])
         //  }
-        setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title} : tl))
+        setTodolists(todolists.map(tl => tl.todolistId === todolistId ? {...tl, title} : tl))
     }
 
     const changeModeHandler = () => {
@@ -182,7 +182,7 @@ function App() {
                     <Grid container spacing={"30px"}>
                         {
                             todolists.map(tl => {
-                                let allTodolistTasks = tasks[tl.id];
+                                let allTodolistTasks = tasks[tl.todolistId];
                                 let tasksForTodolist = allTodolistTasks;
 
                                 if (tl.filter === "active") {
@@ -197,8 +197,8 @@ function App() {
                                            elevation={8}
                                     >
                                         <Todolist
-                                            key={tl.id}
-                                            id={tl.id}
+                                            key={tl.todolistId}
+                                            todolistId={tl.todolistId}
                                             title={tl.title}
                                             tasks={tasksForTodolist}
                                             removeTask={removeTask}
